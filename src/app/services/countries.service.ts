@@ -26,29 +26,18 @@ export class CountriesService {
     return await firstValueFrom(countries$)
   }
 
-  async getCountry(code: string): Promise<Country | null> {
-    const cachedCountries = this.countries()
-
-    if (cachedCountries.length === 0) {
-      const countries = await this.fetchCountries()
-      this.#countriesSignal.set(countries)
-
-      return countries.find(country => country.alpha2Code === code) ?? null
-    } else {
-      return cachedCountries.find(country => country.alpha2Code === code) ?? null
+  async getCountry(code: string) {
+    if (this.countries().length === 0) {
+      await this.initCountries()
     }
+
+    return this.countries().find(country => country.alpha2Code === code) ?? null
   }
 
-  async getCountryBorders(country: Country): Promise<Country[]> {
-    const cachedCountries = this.countries()
-
-    if (cachedCountries.length === 0) {
-      const countries = await this.fetchCountries()
-      this.#countriesSignal.set(countries)
-
-      return countries.filter(c => country.borders?.includes(c.alpha3Code))
-    } else {
-      return cachedCountries.filter(c => country.borders?.includes(c.alpha3Code))
+  async getCountryBorders(country: Country) {
+    if (this.countries().length === 0) {
+      await this.initCountries()
     }
+    return this.countries().filter(c => country.borders?.includes(c.alpha3Code))
   }
 }

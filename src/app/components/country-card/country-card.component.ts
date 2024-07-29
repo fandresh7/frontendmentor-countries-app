@@ -1,7 +1,8 @@
 import { Component, input } from '@angular/core'
-import { Country } from '../../models/countries'
 import { DecimalPipe } from '@angular/common'
 import { RouterLink } from '@angular/router'
+
+import { Country } from '../../models/countries'
 
 @Component({
   selector: 'app-country-card',

@@ -5,15 +5,13 @@ import { afterNextRender, effect, inject, Injectable, PLATFORM_ID, signal } from
   providedIn: 'root'
 })
 export class DarkModeService {
-  platformId = inject(PLATFORM_ID)
-  isBrowser: boolean
+  private platformId = inject(PLATFORM_ID)
+  private isBrowser = isPlatformBrowser(this.platformId)
 
   #darkModeSignal = signal<boolean>(false)
   darkMode = this.#darkModeSignal.asReadonly()
 
   constructor() {
-    this.isBrowser = isPlatformBrowser(this.platformId)
-
     afterNextRender(() => {
       this.initDarkMode()
     })
@@ -24,7 +22,7 @@ export class DarkModeService {
     })
   }
 
-  initDarkMode() {
+  private initDarkMode() {
     const theme = localStorage.getItem('theme')
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
 
@@ -42,11 +40,7 @@ export class DarkModeService {
   toggleDarkMode() {
     const bodyElement = document.querySelector('body')!
 
-    bodyElement.classList.toggle('dark')
-    if (bodyElement.classList.contains('dark')) {
-      this.#darkModeSignal.set(true)
-    } else {
-      this.#darkModeSignal.set(false)
-    }
+    const isDarkMode = bodyElement.classList.toggle('dark')
+    this.#darkModeSignal.set(isDarkMode)
   }
 }
