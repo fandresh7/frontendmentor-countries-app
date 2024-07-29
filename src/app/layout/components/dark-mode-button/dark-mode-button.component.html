@@ -1,0 +1,10 @@
+<button
+  class="flex flex-row items-center gap-2"
+  (click)="toggleDarkMode()">
+  @if (darkMode()) {
+    <app-moon-icon></app-moon-icon>
+  } @else {
+    <app-sun-icon></app-sun-icon>
+  }
+  <p>Dark Mode</p>
+</button>

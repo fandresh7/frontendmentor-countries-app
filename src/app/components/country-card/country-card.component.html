@@ -1,0 +1,18 @@
+@let data = country();
+
+<a
+  class="cursor-pointer"
+  [routerLink]="['country', data.alpha2Code]">
+  <article class="h-full rounded-xl text-theme-dark dark:text-white bg-white dark:bg-theme-dark flex flex-col justify-between gap-2 transition-all hover:scale-105">
+    <img
+      class="rounded-t-xl shadow-sm"
+      [src]="data.flags.svg"
+      [alt]="data.name" />
+    <div class="p-6">
+      <h3 class="font-bold text-xl mb-4">{{ data.name }}</h3>
+      <p><span class="font-semibold">Population:</span> {{ data.population | number }}</p>
+      <p><span class="font-semibold">Region:</span> {{ data.region }}</p>
+      <p><span class="font-semibold">Capital:</span> {{ data.capital }}</p>
+    </div>
+  </article>
+</a>

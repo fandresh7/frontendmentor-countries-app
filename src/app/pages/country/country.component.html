@@ -1,0 +1,53 @@
+@let data = country();
+<div class="py-2 flex flex-col gap-6 font-light text-theme-black dark:text-white">
+  <a
+    routerLink="/"
+    class="cursor-pointer flex items-center gap-4 shadow-custom w-fit py-1 px-6 mb-6 transition-all hover:scale-105 dark:bg-theme-dark">
+    <app-left-arrow-icon></app-left-arrow-icon>
+    Back
+  </a>
+
+  <div class="flex flex-col gap-12 md:flex-row md:items-start">
+    @if (data) {
+      <img
+        class="rounded-xl w-full md:w-2/4"
+        [src]="data.flags.svg"
+        [alt]="data.name" />
+      <section class="flex flex-col gap-6 md:gap-10">
+        <h2 class="font-bold text-3xl">{{ data.name }}</h2>
+        <section class="mt-4 flex flex-col gap-10 md:flex-row md:justify-between">
+          <div class="flex flex-col gap-2">
+            <p><span class="font-semibold">Native Name:</span> {{ data.name }}</p>
+            <p><span class="font-semibold">Population:</span> {{ data.population | number }}</p>
+            <p><span class="font-semibold">Region:</span> {{ data.region }}</p>
+            <p><span class="font-semibold">Sub Region:</span> {{ data.subregion }}</p>
+            <p><span class="font-semibold">Capital:</span> {{ data.capital }}</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p><span class="font-semibold">Top Level Domain:</span> {{ data.topLevelDomain }}</p>
+            <p><span class="font-semibold">Currencies:</span> {{ getCurrencies(data) }}</p>
+            <p><span class="font-semibold">Languages:</span> {{ getLanguages(data) }}</p>
+          </div>
+        </section>
+        <div>
+          <h3 class="font-bold text-xl">Border Countries:</h3>
+          <div class="flex flex-row gap-4 flex-wrap mt-6">
+            @for (country of borderCountries; track country.alpha2Code) {
+              <a
+                [routerLink]="['/country', country.alpha2Code]"
+                class="cursor-pointer shadow-custom py-1 px-4 block transition-all hover:scale-105 dark:bg-theme-dark">
+                {{ country.name }}
+              </a>
+            } @empty {
+              <p>There is not border countries.</p>
+            }
+          </div>
+        </div>
+      </section>
+    } @else {
+      <p>
+        There is not a country with <strong>{{ this.route.snapshot.params['id'] }}</strong> code.
+      </p>
+    }
+  </div>
+</div>

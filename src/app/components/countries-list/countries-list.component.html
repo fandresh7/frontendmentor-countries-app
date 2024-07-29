@@ -1,0 +1,5 @@
+<section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10 justify-stretch items-stretch">
+  @for (country of countries(); track country.alpha2Code) {
+    <app-country-card [country]="country"> </app-country-card>
+  }
+</section>
