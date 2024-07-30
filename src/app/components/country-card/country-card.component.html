@@ -5,11 +5,18 @@
   [routerLink]="['country', data.alpha2Code]">
   <article class="h-full rounded-xl text-theme-dark dark:text-white bg-white dark:bg-theme-dark flex flex-col justify-between gap-2 transition-all hover:scale-105">
     <img
+      appViewTransitionName
+      [name]="'country_image_' + data.alpha2Code"
       class="object-contain rounded-t-xl shadow-sm"
-      [src]="data.flags.png"
+      [src]="data.flags.svg"
       [alt]="data.name" />
     <div class="p-6">
-      <h3 class="font-bold text-xl mb-4">{{ data.name }}</h3>
+      <h3
+        appViewTransitionName
+        [name]="'country_name_' + data.alpha2Code"
+        class="font-bold text-xl mb-4">
+        {{ data.name }}
+      </h3>
       <p><span class="font-semibold">Population:</span> {{ data.population | number }}</p>
       <p><span class="font-semibold">Region:</span> {{ data.region }}</p>
       <p><span class="font-semibold">Capital:</span> {{ data.capital }}</p>
