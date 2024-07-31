@@ -7,12 +7,12 @@
     Back
   </a>
 
-  <div class="flex flex-col gap-12 md:flex-row md:items-start">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
     @if (data) {
       <img
         appViewTransitionName
         [name]="'country_image_' + data.alpha2Code"
-        class="rounded-xl w-full md:w-2/4 object-contain"
+        class="rounded-xl w-full object-contain"
         [src]="data.flags.png"
         [alt]="data.name" />
       <section class="flex flex-col gap-6 md:gap-10">
@@ -35,8 +35,12 @@
           </div>
           <div class="flex flex-col gap-2">
             <p><span class="font-semibold">Top Level Domain:</span> {{ data.topLevelDomain }}</p>
-            <p><span class="font-semibold">Currencies:</span> {{ getCurrencies(data) }}</p>
-            <p><span class="font-semibold">Languages:</span> {{ getLanguages(data) }}</p>
+            @if (data.currencies) {
+              <p><span class="font-semibold">Currencies:</span> {{ currencies() }}</p>
+            }
+            @if (data.languages) {
+              <p><span class="font-semibold">Languages:</span> {{ languages() }}</p>
+            }
           </div>
         </section>
         <div>

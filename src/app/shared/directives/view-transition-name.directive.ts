@@ -11,7 +11,6 @@ export class ViewTransitionNameDirective {
 
   constructor() {
     afterNextRender(() => {
-      console.log(this.name())
       this.setTransitionName()
     })
   }

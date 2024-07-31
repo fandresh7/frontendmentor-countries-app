@@ -1,4 +1,4 @@
-import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core'
+import { Component, computed, effect, inject, signal } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
 import { AsyncPipe, DecimalPipe } from '@angular/common'
 
@@ -15,12 +15,21 @@ import { ViewTransitionNameDirective } from '../../shared/directives/view-transi
   styleUrl: './country.component.scss'
 })
 export class CountryComponent {
-  platformId = inject(PLATFORM_ID)
   route = inject(ActivatedRoute)
   countriesService = inject(CountriesService)
 
   country = signal<Country | null>(null)
   borderCountries: Country[] = []
+
+  currencies = computed(() => {
+    const country = this.country()
+    return country?.currencies?.map(item => item.name).join(', ')
+  })
+
+  languages = computed(() => {
+    const country = this.country()
+    return country?.languages?.map(item => item.name).join(', ')
+  })
 
   constructor() {
     this.route.params.subscribe(params => {
@@ -39,13 +48,5 @@ export class CountryComponent {
         this.borderCountries = response
       })
     })
-  }
-
-  getCurrencies(country: Country) {
-    return country.currencies?.map(item => item.name).join(', ')
-  }
-
-  getLanguages(country: Country) {
-    return country.languages?.map(item => item.name).join(', ')
   }
 }
