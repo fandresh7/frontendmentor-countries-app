@@ -1,1 +1,7 @@
-<app-countries-list [countries]="countries()"></app-countries-list>
+<app-filter-form></app-filter-form>
+
+@if (loading()) {
+  <p class="text-white">loading...</p>
+} @else {
+  <app-countries-list [countries]="countries()"></app-countries-list>
+}

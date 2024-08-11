@@ -1,0 +1,31 @@
+<form
+  [formGroup]="form"
+  class="w-full flex flex-row flex-wrap gap-x-16 gap-y-6 justify-between mb-10">
+  <div class="relative grow md:grow-0 w-fit text-theme-grey dark:text-white">
+    <app-search-icon class="absolute inset-y-0 left-6 my-auto w-6 h-6"></app-search-icon>
+    <input
+      type="text"
+      formControlName="search"
+      placeholder="Search for a country..."
+      class="py-4 pl-16 min-w-full w-full md:w-96 rounded-lg dark:bg-theme-dark outline-0" />
+  </div>
+  <div class="relative">
+    <app-arrow-bottom-icon class="absolute inset-y-0 my-auto right-8 w-3 h-3 text-theme-black dark:text-white"></app-arrow-bottom-icon>
+    <select
+      formControlName="region"
+      class="rounded-lg py-4 px-8 w-56 appearance-none outline-0 text-theme-black dark:text-white dark:bg-theme-dark">
+      <option
+        value=""
+        selected
+        disabled>
+        Filter by Region
+      </option>
+      <option value="">Todos</option>
+      <option value="Africa">Africa</option>
+      <option value="Americas">America</option>
+      <option value="Asia">Asia</option>
+      <option value="Europe">Europe</option>
+      <option value="Oceania">Oceania</option>
+    </select>
+  </div>
+</form>
