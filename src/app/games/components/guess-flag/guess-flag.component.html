@@ -1,0 +1,25 @@
+<section class="w-full max-w-lg mx-auto flex flex-col gap-4 items-center transition-all ease-in-out">
+  <p class="dark:text-white text-left w-full">{{ userCorrectAnswer().length }} correct answers</p>
+  <div class="flex gap-2">
+    @if (countryToGuess()) {
+      <img
+        class="w-full"
+        [src]="countryToGuess()?.flags?.svg"
+        [alt]="countryToGuess()?.name" />
+    }
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 dark:text-white text-center w-full">
+    @for (country of randomCountries() | randomArray; track country.alpha2Code) {
+      <p
+        (click)="userResponse(country)"
+        class="rounded flex justify-center items-center bg-white dark:bg-theme-dark dark:text-white cursor-pointer shadow-lg py-5 px-2 w-full transition-all hover:scale-105 duration-300 hover:shadow-xl"
+        [ngClass]="{
+          '!bg-green-700': isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code,
+          '!bg-red-700': !isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code
+        }">
+        {{ country.name }}
+      </p>
+    }
+  </div>
+</section>

@@ -1,12 +1,14 @@
-import { inject, Injectable, signal } from '@angular/core'
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core'
 import { Country } from '../models/countries'
 import { HttpClient } from '@angular/common/http'
 import { firstValueFrom } from 'rxjs'
+import { isPlatformServer } from '@angular/common'
 
 @Injectable({
   providedIn: 'root'
 })
 export class CountriesService {
+  platformId = inject(PLATFORM_ID)
   http = inject(HttpClient)
 
   #countriesSignal = signal<Country[]>([])
@@ -15,20 +17,21 @@ export class CountriesService {
   #loadingSignal = signal(false)
   loading = this.#loadingSignal.asReadonly()
 
+  isServer = isPlatformServer(this.platformId)
+
   constructor() {
     this.getCountries()
   }
 
   async getCountries(search?: string, region?: string) {
-    search = search?.toLowerCase().trim()
-
+    const query = (search ?? '').toLowerCase().trim()
     const countries = await this.fetchCountries()
 
     const filteredCountries = countries.filter(country => {
-      const searchCondition = !search || country.name.toLowerCase().includes(search)
-      const regionCondition = !region || country.region === region
+      const matchesSearch = !query || country.name.toLowerCase().includes(query)
+      const matchesRegion = !region || country.region === region
 
-      return searchCondition && regionCondition
+      return matchesSearch && matchesRegion
     })
 
     this.#countriesSignal.set(filteredCountries)
