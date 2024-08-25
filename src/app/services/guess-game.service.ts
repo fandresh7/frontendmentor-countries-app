@@ -17,10 +17,10 @@ export class GuessGameService {
   countries = this.countriesService.countries
 
   #userCorrectAnswersSignal = signal<Country[]>([])
-  userCorrectAnswer = this.#userCorrectAnswersSignal.asReadonly()
+  userCorrectAnswers = this.#userCorrectAnswersSignal.asReadonly()
 
-  #currentAmountQuestionsSignal = signal<Country[]>([])
-  currentAmountQuestions = this.#currentAmountQuestionsSignal.asReadonly()
+  #askedCountriesSignal = signal<Country[]>([])
+  askedCountries = this.#askedCountriesSignal.asReadonly()
 
   #selectedCountrySignal = signal<Country | null>(null)
   selectedCountry = this.#selectedCountrySignal.asReadonly()
@@ -29,19 +29,23 @@ export class GuessGameService {
     this.#selectedCountrySignal.set(country)
   }
 
-  addUserCorrectAnswer(country: Country) {
+  addUserCorrectAnswers(country: Country) {
     this.#userCorrectAnswersSignal.update(value => {
       const update = [...value, country]
       return update
     })
   }
 
-  addCurrentAmountQuestion(country: Country) {
-    this.#currentAmountQuestionsSignal.update(value => {
+  addAskedQuestions(country: Country) {
+    this.#askedCountriesSignal.update(value => {
       const update = [...value, country]
       return update
     })
   }
+
+  countriesToPlay = computed(() => {
+    return this.countries().filter(country => country.subregion === 'South America' && country.independent)
+  })
 
   isCorrectAnswer = computed(() => {
     const countryToGuess = this.countryToGuess()
@@ -50,42 +54,52 @@ export class GuessGameService {
     return countryToGuess?.alpha2Code === selectedCountry?.alpha2Code
   })
 
-  randomCountries = computed<Country[]>(() => {
-    if (!this.isBrowser) return []
-
-    const countries = this.countries()
-    const currentQuestionsIds = this.currentAmountQuestions().map(item => item.alpha2Code)
-    const restCountries = countries.filter(country => !currentQuestionsIds.includes(country.alpha2Code))
-
-    const randomCountries = generateRandomOptions(restCountries, 4)
-    return randomCountries
-  })
-
   countryToGuess = computed<Country | null>(() => {
     if (!this.isBrowser) return null
 
-    const country = this.randomCountries()[0]
-    return country ?? null
+    const askedCountries = this.askedCountries().map(c => c.alpha2Code)
+    const countries = this.countriesToPlay().filter(c => !askedCountries.includes(c.alpha2Code))
+
+    return generateRandomOptions(countries, 1)[0] || null
+  })
+
+  randomCountries = computed<Country[]>(() => {
+    if (!this.isBrowser) return []
+
+    const AMOUNT_OPTIONS = 4
+
+    const countryToGuess = this.countryToGuess()
+    if (!countryToGuess) return []
+
+    const remainCountries = this.countriesToPlay().filter(country => country.alpha2Code !== countryToGuess?.alpha2Code)
+
+    const options = generateRandomOptions(remainCountries, AMOUNT_OPTIONS - 1)
+    return [...options, countryToGuess]
+  })
+
+  gameHasFinish = computed(() => {
+    return this.countriesToPlay().length > 0 && this.countriesToPlay().length === this.askedCountries().length
   })
 
   initialize() {
     this.#userCorrectAnswersSignal.set([])
-    this.#currentAmountQuestionsSignal.set([])
+    this.#askedCountriesSignal.set([])
   }
 
   userResponse(guessedCountry: Country) {
     this.setSelectedCountry(guessedCountry)
 
-    const timer$ = timer(1000).pipe(
+    const timer$ = timer(700).pipe(
       first(),
       tap(() => {
         const countryToGuess = this.countryToGuess()
+        if (!countryToGuess) return
 
-        if (guessedCountry.alpha2Code === countryToGuess?.alpha2Code) {
-          this.addUserCorrectAnswer(guessedCountry)
+        if (guessedCountry.alpha2Code === countryToGuess.alpha2Code) {
+          this.addUserCorrectAnswers(guessedCountry)
         }
 
-        this.addCurrentAmountQuestion(guessedCountry)
+        this.addAskedQuestions(countryToGuess)
         this.setSelectedCountry(null)
       })
     )
