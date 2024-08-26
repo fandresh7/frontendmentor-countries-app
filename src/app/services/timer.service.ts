@@ -1,7 +1,8 @@
 import { isPlatformBrowser } from '@angular/common'
 import { Injectable, signal, computed, inject, PLATFORM_ID } from '@angular/core'
 
-const MAX_TIME = 59990
+// const MAX_TIME = 120000
+const MAX_TIME = 1200000
 const INTERVAL = 10
 
 @Injectable({
@@ -42,7 +43,7 @@ export class TimerService {
     this.intervalId = window.setInterval(() => {
       const nextCounter = this.#counterSignal() - INTERVAL
 
-      if (nextCounter < 0) {
+      if (nextCounter <= 0) {
         this.stopTimer()
       }
 

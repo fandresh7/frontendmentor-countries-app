@@ -6,11 +6,12 @@ import { GuessGameService } from '../../../services/guess-game.service'
 import { Country } from '../../../models/countries'
 import { CounterComponent } from '../counter/counter.component'
 import { TimerService } from '../../../services/timer.service'
+import { TimePipe } from '../../../shared/pipes/time.pipe'
 
 @Component({
   selector: 'app-guess-flag',
   standalone: true,
-  imports: [RandomArrayPipe, NgClass, CounterComponent],
+  imports: [RandomArrayPipe, NgClass, CounterComponent, TimePipe],
   templateUrl: './guess-flag.component.html',
   styleUrl: './guess-flag.component.scss'
 })
@@ -19,6 +20,7 @@ export class GuessFlagComponent implements OnInit {
   timerService = inject(TimerService)
 
   randomCountries = this.guessGameService.randomCountries
+  countriesToPlay = this.guessGameService.countriesToPlay
   countryToGuess = this.guessGameService.countryToGuess
   selectedCountry = this.guessGameService.selectedCountry
   isCorrectAnswer = this.guessGameService.isCorrectAnswer

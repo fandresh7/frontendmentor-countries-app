@@ -44,7 +44,7 @@ export class GuessGameService {
   }
 
   countriesToPlay = computed(() => {
-    return this.countries().filter(country => country.subregion === 'South America' && country.independent)
+    return this.countries().filter(country => country.independent)
   })
 
   isCorrectAnswer = computed(() => {

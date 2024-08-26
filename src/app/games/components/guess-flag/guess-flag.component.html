@@ -1,30 +1,40 @@
-<section class="w-full max-w-lg mx-auto flex flex-col gap-4 items-center">
-  @if (gameHasFinish() || counter() <= 0) {
-    <p (click)="startGame()">Game Finish</p>
-  } @else {
-    <p class="dark:text-white text-left w-full">{{ userCorrectAnswers().length }} correct answers</p>
+<section class="flex flex-col gap-4 items-center text-theme-black w-full max-w-lg shadow-lg bg-white p-6 rounded-xl mx-auto dark:text-white dark:bg-theme-dark">
+  @if (!gameHasFinish() && counter() > 0) {
     <app-counter class="w-full"></app-counter>
     <div class="flex gap-2">
       @if (countryToGuess()) {
         <img
-          class="w-full"
+          class="w-full sm:w-4/5 mx-auto shadow-lg max-h-60"
           [src]="countryToGuess()?.flags?.svg"
-          [alt]="countryToGuess()?.name" />
+          alt="Country to Guess" />
       }
     </div>
 
-    <div class="grid grid-cols-2 gap-4 dark:text-white text-center w-full">
+    <div class="grid grid-cols-2 gap-4 text-center w-full">
       @for (country of randomCountries() | randomArray; track country.alpha2Code) {
         <p
           (click)="userResponse(country)"
-          class="rounded flex justify-center items-center bg-white dark:bg-theme-dark dark:text-white cursor-pointer shadow-lg py-5 px-2 w-full transition-all hover:scale-105 duration-300 hover:shadow-xl"
+          class="rounded flex justify-center items-center bg-theme-bg-white dark:bg-theme-bg-dark cursor-pointer shadow-lg py-5 px-2 w-full transition-all hover:scale-105 duration-300 hover:shadow-xl"
           [ngClass]="{
-            '!bg-green-700': isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code,
-            '!bg-red-700': !isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code
+            '!bg-[#4caf50]': isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code,
+            '!bg-[#f44336]': !isCorrectAnswer() && country.alpha2Code === selectedCountry()?.alpha2Code
           }">
           {{ country.name }}
         </p>
       }
     </div>
+
+    <div class="flex flex-row items-center gap-8 justify-stretch w-full rounded-lg p-4 bg-theme-bg-white font-semibold dark:bg-theme-bg-dark">
+      <p class="text-right w-full text-green-700 dark:text-green-300">{{ userCorrectAnswers().length }} Correct</p>
+      <p class="text-left w-full text-red-700 dark:text-red-300">{{ countriesToPlay().length - askedCountries().length }} Remaining</p>
+    </div>
+  }
+
+  @if (gameHasFinish() || counter() <= 0) {
+    <p>Game Finish</p>
+    <p>Remaining time: {{ counter() | time }}</p>
+    <p>Guessed: {{ userCorrectAnswers().length }} / {{ askedCountries().length }}</p>
+
+    <button (click)="startGame()">Start Again</button>
   }
 </section>
