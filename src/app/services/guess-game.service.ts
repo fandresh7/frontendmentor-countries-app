@@ -6,12 +6,22 @@ import { Country } from '../models/countries'
 import { CountriesService } from './countries.service'
 import { generateRandomOptions } from '../shared/utils/randomArray'
 
+interface Settings {
+  similarFlags: boolean
+  regions: string[]
+  independent: 'independent' | 'nonIndependent'
+  grayscaleMode: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class GuessGameService {
   platformId = inject(PLATFORM_ID)
   isBrowser = isPlatformBrowser(this.platformId)
+
+  #settingsSignal = signal<Settings>({ similarFlags: true, regions: [], independent: 'independent', grayscaleMode: false })
+  settings = this.#settingsSignal.asReadonly()
 
   countriesService = inject(CountriesService)
   countries = this.countriesService.countries
@@ -44,7 +54,13 @@ export class GuessGameService {
   }
 
   countriesToPlay = computed(() => {
-    return this.countries().filter(country => country.independent)
+    const { regions, independent } = this.#settingsSignal()
+
+    return this.countries().filter(country => {
+      const matchesIndependence = independent ? country.independent : true
+      const matchesRegion = regions.length > 0 ? regions.includes(country.region) : true
+      return matchesIndependence && matchesRegion
+    })
   })
 
   isCorrectAnswer = computed(() => {
@@ -67,13 +83,17 @@ export class GuessGameService {
     if (!this.isBrowser) return []
 
     const AMOUNT_OPTIONS = 4
+    const { similarFlags } = this.#settingsSignal()
 
     const countryToGuess = this.countryToGuess()
     if (!countryToGuess) return []
 
-    const remainCountries = this.countriesToPlay().filter(country => country.alpha2Code !== countryToGuess?.alpha2Code)
+    // Apply settings for similar flags
+    const countriesOptions = this.countriesToPlay().filter(country => {
+      return similarFlags ? countryToGuess.similarFlags.includes(country.alpha3Code) : true
+    })
 
-    const options = generateRandomOptions(remainCountries, AMOUNT_OPTIONS - 1)
+    const options = generateRandomOptions(countriesOptions, AMOUNT_OPTIONS - 1)
     return [...options, countryToGuess]
   })
 
@@ -105,5 +125,9 @@ export class GuessGameService {
     )
 
     timer$.subscribe()
+  }
+
+  updateSettings(newSettings: Partial<Settings>) {
+    this.#settingsSignal.update(currentSettings => ({ ...currentSettings, ...newSettings }))
   }
 }

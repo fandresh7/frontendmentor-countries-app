@@ -19,6 +19,7 @@ export interface Country {
   flag: string
   cioc?: string
   independent: boolean
+  similarFlags: string[]
 }
 
 export interface Currency {
