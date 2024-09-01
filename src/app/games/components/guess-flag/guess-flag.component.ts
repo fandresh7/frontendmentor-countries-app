@@ -1,31 +1,30 @@
-import { Component, effect, inject, OnInit } from '@angular/core'
-import { NgClass } from '@angular/common'
+import { Component, effect, inject } from '@angular/core'
+
+import { GuessGameService } from '../../../services/guess-game.service'
+import { TimerService } from '../../../services/timer.service'
 
 import { RandomArrayPipe } from '../../../shared/pipes/random-array.pipe'
-import { GuessGameService } from '../../../services/guess-game.service'
-import { Country } from '../../../models/countries'
+
 import { CounterComponent } from '../counter/counter.component'
-import { TimerService } from '../../../services/timer.service'
-import { TimePipe } from '../../../shared/pipes/time.pipe'
+import { FinishComponent } from '../finish/finish.component'
+import { StatusComponent } from '../status/status.component'
+import { OptionComponent } from '../option/option.component'
+import { GuessingCountryComponent } from '../guessing-country/guessing-country.component'
+
+import { Country } from '../../../models/countries'
 
 @Component({
   selector: 'app-guess-flag',
   standalone: true,
-  imports: [RandomArrayPipe, NgClass, CounterComponent, TimePipe],
+  imports: [RandomArrayPipe, CounterComponent, FinishComponent, StatusComponent, OptionComponent, GuessingCountryComponent],
   templateUrl: './guess-flag.component.html',
   styleUrl: './guess-flag.component.scss'
 })
-export class GuessFlagComponent implements OnInit {
+export class GuessFlagComponent {
   guessGameService = inject(GuessGameService)
   timerService = inject(TimerService)
 
   randomCountries = this.guessGameService.randomCountries
-  countriesToPlay = this.guessGameService.countriesToPlay
-  countryToGuess = this.guessGameService.countryToGuess
-  selectedCountry = this.guessGameService.selectedCountry
-  isCorrectAnswer = this.guessGameService.isCorrectAnswer
-  userCorrectAnswers = this.guessGameService.userCorrectAnswers
-  askedCountries = this.guessGameService.askedCountries
   gameHasFinish = this.guessGameService.gameHasFinish
 
   counter = this.timerService.counter
@@ -35,10 +34,6 @@ export class GuessFlagComponent implements OnInit {
       if (!this.gameHasFinish()) return
       this.timerService.stopTimer()
     })
-  }
-
-  ngOnInit() {
-    this.startGame()
   }
 
   startGame() {

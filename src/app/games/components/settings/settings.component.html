@@ -1,0 +1,82 @@
+<h2 class="text-lg font-semibold">Game Settings</h2>
+
+<!-- Difficulty Setting -->
+<div class="w-full">
+  <label
+    for="difficulty"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >Select Difficulty</label
+  >
+  <select
+    id="difficulty"
+    class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+</div>
+
+<!-- Time Limit Setting -->
+<div class="w-full">
+  <label
+    for="timeLimit"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >Time Limit (seconds)</label
+  >
+  <input
+    type="number"
+    id="timeLimit"
+    min="5"
+    max="60"
+    step="5"
+    value="20"
+    class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+</div>
+
+<!-- Grayscale Mode Setting -->
+<div class="w-full flex items-center gap-2">
+  <input
+    type="checkbox"
+    id="grayscaleMode"
+    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" />
+  <label
+    for="grayscaleMode"
+    class="ml-2 text-sm font-medium text-gray-900 dark:text-white"
+    >Enable Grayscale Mode</label
+  >
+</div>
+
+<!-- Number of Questions Setting -->
+<div class="w-full">
+  <label
+    for="maxQuestions"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >Number of Questions</label
+  >
+  <input
+    type="number"
+    id="maxQuestions"
+    min="1"
+    max="50"
+    step="1"
+    value="10"
+    class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500" />
+</div>
+
+<!-- Play Mode Setting -->
+<div class="w-full">
+  <label
+    for="playMode"
+    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >Play Mode</label
+  >
+  <select
+    id="playMode"
+    class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500">
+    <option value="single">Single Player</option>
+    <option value="multiplayer">Multiplayer</option>
+  </select>
+</div>
+
+<!-- Start Game Button -->
+<button class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Start Game</button>

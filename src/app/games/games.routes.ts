@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router'
-import { GuessFlagComponent } from './components/guess-flag/guess-flag.component'
+import { GamesComponent } from './pages/games/games.component'
 
 export const routes: Routes = [
   {
-    path: 'game1',
-    component: GuessFlagComponent
+    path: '',
+    component: GamesComponent
   }
 ]

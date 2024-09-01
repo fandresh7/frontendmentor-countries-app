@@ -1,0 +1,9 @@
+<p
+  (click)="userResponse(country())"
+  class="rounded flex justify-center items-center bg-theme-bg-white dark:bg-theme-bg-dark cursor-pointer shadow-lg py-5 px-2 w-full transition-all hover:scale-105 duration-300 hover:shadow-xl"
+  [ngClass]="{
+    '!bg-[#4caf50]': isCorrectAnswer() && country().alpha2Code === selectedCountry()?.alpha2Code,
+    '!bg-[#f44336]': !isCorrectAnswer() && country().alpha2Code === selectedCountry()?.alpha2Code
+  }">
+  {{ country().name }}
+</p>

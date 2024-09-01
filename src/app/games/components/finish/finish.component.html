@@ -1,0 +1,5 @@
+<p>Game Finish</p>
+<p>Remaining time: {{ counter() | time }}</p>
+<p>Guessed: {{ userCorrectAnswers().length }} / {{ askedCountries().length }}</p>
+
+<button (click)="onStartGame()">Start Again</button>
