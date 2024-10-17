@@ -1,0 +1,18 @@
+<section class="flex flex-col gap-4 items-center text-theme-black w-full max-w-lg shadow-lg bg-white p-6 rounded-xl mx-auto dark:text-white dark:bg-theme-dark">
+  @if (!gameHasFinished() && counter() > 0) {
+    <app-counter class="w-full"></app-counter>
+    <app-guessing-country></app-guessing-country>
+
+    <div class="grid grid-cols-2 gap-4 text-center w-full">
+      @for (country of options() | randomArray; track country.alpha2Code) {
+        <app-option [country]="country"></app-option>
+      }
+    </div>
+
+    <app-status></app-status>
+  }
+
+  @if (gameHasFinished() || counter() <= 0) {
+    <app-finish (startGame)="startGame()"></app-finish>
+  }
+</section>

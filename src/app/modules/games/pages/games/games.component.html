@@ -1,0 +1,5 @@
+@if (mode() === 'settings') {
+  <app-settings (start)="changeMode('game')"></app-settings>
+} @else {
+  <app-guess-flag></app-guess-flag>
+}

@@ -1,0 +1,9 @@
+<div class="flex gap-2">
+  @if (countryToGuess()) {
+    <img
+      class="w-full sm:w-4/5 mx-auto shadow-lg max-h-60"
+      [ngClass]="{ 'grayscale-0': !isGrayscaleMode(), grayscale: isGrayscaleMode() }"
+      [src]="countryToGuess()?.flags?.svg"
+      alt="Country to Guess" />
+  }
+</div>

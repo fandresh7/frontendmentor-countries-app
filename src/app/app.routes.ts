@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router'
-import { HomeComponent } from './pages/home/home.component'
-import { CountryComponent } from './pages/country/country.component'
+import { HomeComponent } from './modules/countries/pages/home/home.component'
+import { CountryComponent } from './modules/countries/pages/country/country.component'
 
 export const routes: Routes = [
   {
@@ -13,6 +13,6 @@ export const routes: Routes = [
   },
   {
     path: 'games',
-    loadChildren: () => import('./games/games.routes').then(m => m.routes)
+    loadChildren: () => import('./modules/games/games.routes').then(m => m.routes)
   }
 ]
