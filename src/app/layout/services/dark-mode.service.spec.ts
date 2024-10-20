@@ -10,7 +10,7 @@ class LocalStorageServiceMock {
   setItem = jasmine.createSpy('setItem')
 }
 
-fdescribe('DarkModeService', () => {
+describe('DarkModeService', () => {
   let service: DarkModeService
   let document: Document
   let localStorageServiceMock: LocalStorageServiceMock
