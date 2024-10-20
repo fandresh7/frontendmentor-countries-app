@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common'
 import { afterNextRender, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core'
+import { LocalStorageService } from '../../shared/services/local-storage.service'
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,8 @@ import { afterNextRender, effect, inject, Injectable, PLATFORM_ID, signal } from
 export class DarkModeService {
   private platformId = inject(PLATFORM_ID)
   private isBrowser = isPlatformBrowser(this.platformId)
+
+  localStorageService = inject(LocalStorageService)
 
   #darkModeSignal = signal<boolean>(false)
   darkMode = this.#darkModeSignal.asReadonly()
@@ -18,12 +21,12 @@ export class DarkModeService {
 
     effect(() => {
       const darkMode = this.darkMode()
-      if (this.isBrowser) localStorage.setItem('theme', darkMode ? 'dark' : 'light')
+      if (this.isBrowser) this.localStorageService.setItem('theme', darkMode ? 'dark' : 'light')
     })
   }
 
   private initDarkMode() {
-    const theme = localStorage.getItem('theme')
+    const theme = this.localStorageService.getItem('theme')
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
 
     const bodyElement = document.querySelector('body')!
