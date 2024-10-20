@@ -8,7 +8,7 @@ class DarkModeServiceMock {
   toggleDarkMode = jasmine.createSpy('toggleDarkMode')
 }
 
-fdescribe('DarkModeButtonComponent', () => {
+describe('DarkModeButtonComponent', () => {
   let component: DarkModeButtonComponent
   let fixture: ComponentFixture<DarkModeButtonComponent>
   let compiled: HTMLElement
